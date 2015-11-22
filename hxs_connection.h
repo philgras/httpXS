@@ -2,7 +2,7 @@
  * hxs_connection.h
  *
  *  Created on: 16.11.2015
- *      Author: philip
+ *      Author: philgras
  */
 
 #ifndef HXS_CONNECTION_H_
@@ -11,40 +11,53 @@
 #include "hxs_std.h"
 #include <netinet/in.h>
 
-typedef struct sockaddr_in sockaddr_in_t ;
-typedef struct sockaddr_in6 sockaddr_in6_t ;
-typedef struct sockaddr sockaddr_t ;
+#define NO_CONNS_AVAIL 0x0;
+#define CONNS_AVAIL 0x1;
 
-typedef struct{
+/**
+ * simple connection structure
+ * prev, next are supposed to be used internally
+ */
+typedef struct {
 	hxs_socket socket;
 
-	sockaddr_t host;
-	socklen_t hostaddr_size;
-	sockaddr_t client;
+	sockaddr_storage_t clientaddr;
 	socklen_t clientaddr_size;
 
 	hxs_connection_t* prev;
-	hxs_connection_t* last;
+	hxs_connection_t* next;
+
 }hxs_connection_t;
 
+/**
+ * hxs_conn_list_t
+ */
+typedef hxs_connection_t** hxs_conn_list_t;
 
+/**
+ * hxs_listener_t
+ */
 typedef struct{
 	hxs_socket socket;
 
-	sockaddr_t host;
+	sockaddr_storage_t hostaddr;
 	socklen_t hostaddr_size;
 
-	int more_conns_flag;
+	unsigned int available_conns: 1;
 
-}hxs_listening_t;
-
-
-
-int hxs_delete_conn(hxs_connection_t* conn);
+}hxs_listener_t;
 
 
-int hxs_start_listening(hxs_listening_t* listening);
-hxs_connection_t* hxs_get_new_conn(hxs_listening_t* listening);
-int hxs_stop_listening(hxs_listening_t* listening);
+/*hxs_conn_list_t functions*/
+hxs_connection_t* hxs_conn_list_add(hxs_conn_list_t list, const hxs_connection_t* conn);
+void hxs_conn_list_clear(hxs_conn_list_t list);
+void hxs_conn_list_merge(hxs_conn_list_t  list_into,hxs_conn_list_t list_other);
+
+/**
+ * hxs_listener_t
+ */
+int hxs_open_listener(hxs_listener_t* listener , const char* port , int afamily , int backlog);
+hxs_connection_t* hxs_get_new_conn(hxs_listener_t* listener);
+int hxs_close_listener(hxs_listener_t* listener);
 
 #endif /* HXS_CONNECTION_H_ */
