@@ -33,7 +33,7 @@ typedef struct hxs_connection_s hxs_connection_t;
 /**
  * hxs_conn_list_t
  */
-typedef hxs_connection_t** hxs_conn_list_t;
+typedef hxs_connection_t* hxs_conn_list_t;
 
 /**
  * hxs_listener_t
@@ -50,9 +50,9 @@ typedef struct{
 
 
 /*hxs_conn_list_t functions*/
-hxs_connection_t* hxs_conn_list_add(hxs_conn_list_t list, const hxs_connection_t* conn);
-void hxs_conn_list_clear(hxs_conn_list_t list);
-hxs_conn_list_t hxs_conn_list_merge(hxs_conn_list_t  list_into,hxs_conn_list_t list_other);
+hxs_connection_t* hxs_conn_list_add(hxs_conn_list_t* listptr, const hxs_connection_t* conn);
+void hxs_conn_list_clear(hxs_conn_list_t* listptr);
+hxs_conn_list_t hxs_conn_list_merge(hxs_conn_list_t  list_into, hxs_conn_list_t* list_other);
 
 /**
  * hxs_listener_t

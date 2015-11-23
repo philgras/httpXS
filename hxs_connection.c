@@ -20,7 +20,7 @@ static hxs_socket get_bound_socket(const char* port, int afamily,
 							sockaddr_storage_t* addr, socklen_t* len);
 static int enable_non_blocking(int socket);
 
-hxs_connection_t* hxs_conn_list_add(hxs_conn_list_t list, const hxs_connection_t* conn){
+hxs_connection_t* hxs_conn_list_add(hxs_conn_list_t * list, const hxs_connection_t* conn){
 
 	assert(conn!=NULL);
 
@@ -28,12 +28,13 @@ hxs_connection_t* hxs_conn_list_add(hxs_conn_list_t list, const hxs_connection_t
 	hxs_connection_t* n_conn = malloc(sizeof(hxs_connection_t));
 	if(n_conn){
 		*n_conn = *conn;
-		if(list == NULL){
+		if(*list == NULL){
 			n_conn->prev = n_conn;
 			n_conn->next  =n_conn;
+			*list = n_conn;
 		}else{
 			n_conn->prev  = (*list)->prev;
-			n_conn->next = *list;
+			n_conn->next = (*list);
 			(*list)->prev->next = n_conn;
 			(*list)->prev = n_conn;
 		}
@@ -42,33 +43,39 @@ hxs_connection_t* hxs_conn_list_add(hxs_conn_list_t list, const hxs_connection_t
 
 }
 
-void hxs_conn_list_clear(hxs_conn_list_t list){
+void hxs_conn_list_clear(hxs_conn_list_t* listptr){
 
-	assert(list != NULL);
+	if(*listptr == NULL) return;
 
-	for(hxs_connection_t* iter = *list; iter != NULL; iter = iter->next){
+	hxs_connection_t* iter = *listptr, *next;
+
+	do{
+		next = iter->next;
 		hxs_closesocket(iter->socket);
 		free(iter);
-	}
 
-	list = NULL;
+	}while((iter = next) != *listptr);
+
+	*listptr = NULL;
+
 }
 
-hxs_conn_list_t hxs_conn_list_merge(hxs_conn_list_t  list_into, hxs_conn_list_t list_other){
+hxs_conn_list_t hxs_conn_list_merge(hxs_conn_list_t  list_into, hxs_conn_list_t* list_other){
 
 	assert(list_into != NULL);
 
-	if(list_other == NULL) return list_into;
+	if((*list_other) == NULL) return list_into;
 
-	//get the last element of the list that should be merged
-	hxs_connection_t* last = *list_other;
-	while(last->next != NULL){
-		last = last->next;
-	}
+	hxs_connection_t* connptr;
 
-	last->next = *list_into;
-	(*list_into)->prev = last;
-	list_into = list_other;
+	list_into->prev->next = (*list_other);
+	(*list_other)->prev->next = list_into;
+
+	connptr = list_into->prev;
+	list_into->prev = (*list_other)->prev;
+	(*list_other)->prev = connptr;
+
+	(*list_other) = NULL;
 
 	return list_into;
 

@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS =-pedantic -Wall -Wfatal-errors -g -O0
+CFLAGS =-pedantic -Wall -Wfatal-errors -std=c11 -D_POSIX_SOURCE -g -O0
 LFLAGS = #-lpthread
 TESTDIR = test
 BINDIR = bin

@@ -14,10 +14,13 @@ size_t iterate(hxs_conn_list_t l){
 	assert(l != NULL);
 
 	size_t n = 0;
-	hxs_connection_t * conn = *l;
+	hxs_connection_t * conn = l;
 	while(conn!= NULL){
-		conn = conn->next;
 		++n;
+		conn = conn->next;
+		if(conn == l){
+			break;
+		}
 	}
 
 	return n;
@@ -38,14 +41,14 @@ int main(void){
 
 	//test add
 	for(int i = 0; i < num_of_conns;++i){
-		if(!hxs_conn_list_add(clist,&conn)){
+		if(!hxs_conn_list_add(&clist,&conn)){
 			printf("Failed to add a connection to the list...\n");
 			exit(EXIT_FAILURE);
 		}
 	}
 
 	for(int i = 0; i < num_of_conns_other;++i){
-		if(!hxs_conn_list_add(clist_other,&conn)){
+		if(!hxs_conn_list_add(&clist_other,&conn)){
 			printf("Failed to add a connection to the list...\n");
 			exit(EXIT_FAILURE);
 		}
@@ -54,14 +57,14 @@ int main(void){
 
 
 	//testing merge
-	hxs_conn_list_merge(clist,clist_other);
+	hxs_conn_list_merge(clist,&clist_other);
 	if(iterate(clist) != num_of_conns + num_of_conns_other){
 		printf("Failed to merge...\n");
 		exit(EXIT_FAILURE);
 	}
 	printf("Merged successfully...\n");
 
-	hxs_conn_list_clear(clist);
+	hxs_conn_list_clear(&clist);
 
 	return EXIT_SUCCESS;
 }

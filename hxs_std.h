@@ -31,7 +31,7 @@ typedef struct sockaddr_storage sockaddr_storage_t;
 
 enum hxs_errorcode{
 	HXS_OK = 0,
-	HXS_ERROR = -1,
+	HXS_ERROR = -1
 };
 
 
