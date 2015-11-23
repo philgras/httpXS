@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -pedantic -Wall -Wfatal-errors -std=c11
+CFLAGS =-pedantic -Wall -Wfatal-errors -g -O0
 LFLAGS = #-lpthread
 TESTDIR = test
 BINDIR = bin
@@ -14,7 +14,7 @@ httpXS: *.c *.h
 
 test: $(TESTDIR)/*.c *.c *.h
 #hxs_conn_list_test
-	$(CC) $(CFLAGS) $(LFLAGS) -o $(TESTDIR)/hxs_conn_list_test hxs_conn_list_test.c
+	$(CC) $(CFLAGS) $(LFLAGS) -o $(BINDIR)/hxs_conn_list_test $(TESTDIR)/hxs_conn_list_test.c hxs_connection.c
 
 clean:
 	rm -f *.o

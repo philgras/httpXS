@@ -18,16 +18,17 @@
  * simple connection structure
  * prev, next are supposed to be used internally
  */
-typedef struct {
+struct hxs_connection_s{
 	hxs_socket socket;
 
 	sockaddr_storage_t clientaddr;
 	socklen_t clientaddr_size;
 
-	hxs_connection_t* prev;
-	hxs_connection_t* next;
+	struct hxs_connection_s* prev;
+	struct hxs_connection_s* next;
 
-}hxs_connection_t;
+};
+typedef struct hxs_connection_s hxs_connection_t;
 
 /**
  * hxs_conn_list_t
@@ -51,7 +52,7 @@ typedef struct{
 /*hxs_conn_list_t functions*/
 hxs_connection_t* hxs_conn_list_add(hxs_conn_list_t list, const hxs_connection_t* conn);
 void hxs_conn_list_clear(hxs_conn_list_t list);
-void hxs_conn_list_merge(hxs_conn_list_t  list_into,hxs_conn_list_t list_other);
+hxs_conn_list_t hxs_conn_list_merge(hxs_conn_list_t  list_into,hxs_conn_list_t list_other);
 
 /**
  * hxs_listener_t

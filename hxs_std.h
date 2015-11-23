@@ -10,10 +10,11 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <unistd.h>
 
 /*TRACE STREAMS*/
 #define HXS_DEBUG_STREAM stdout
-#define HXS_DEBUG_MSG(msg, ...) fprintf(HXS_DEBUG_STREAM, msg, ##__VA_ARGS__)
+#define HXS_DEBUG_MSG(...) fprintf(HXS_DEBUG_STREAM,__VA_ARGS__)
 #define HXS_INFO_STREAM stdout
 #define HXS_ERROR_STREAM stderr
 
