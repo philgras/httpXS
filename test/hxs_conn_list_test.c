@@ -30,11 +30,11 @@ size_t iterate(hxs_conn_list_t l){
 
 int main(void){
 
-	const size_t num_of_conns = 5;
-	const size_t num_of_conns_other = 2;
+	const size_t num_of_conns = 1;
+	const size_t num_of_conns_other = 0;
 	hxs_conn_list_t clist = NULL;
 	hxs_conn_list_t clist_other = NULL;
-	hxs_connection_t conn;
+	hxs_connection_t conn = {};
 
 	//set a value
 	conn.socket = HXS_INVALID_SOCKET;

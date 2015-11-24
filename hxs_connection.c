@@ -53,7 +53,7 @@ void hxs_conn_list_clear(hxs_conn_list_t* listptr){
 		next = iter->next;
 		hxs_closesocket(iter->socket);
 		free(iter);
-
+		HXS_DEBUG_MSG("Cleared connection...\n");
 	}while((iter = next) != *listptr);
 
 	*listptr = NULL;
@@ -82,26 +82,36 @@ hxs_conn_list_t hxs_conn_list_merge(hxs_conn_list_t  list_into, hxs_conn_list_t*
 }
 
 
-hxs_connection_t* hxs_get_new_conns(const hxs_listener_t* listener){
+hxs_conn_list_t hxs_get_new_conns(const hxs_listener_t* listener){
 
-	sockaddr_storage_t addr;
-	socklen_t len;
-	hxs_socket a_socket;
-	//hxs_conn_list_t list = NULL;
+
+	hxs_conn_list_t list = NULL;
+	hxs_connection_t new_conn = {};
 
 	while(1){
 
-		a_socket = accept(listener->socket,((sockaddr_t*)&addr), &len);
-		if(a_socket == HXS_INVALID_SOCKET){
-			//error or no descriptors available
+		new_conn->socket = accept(listener->socket,((sockaddr_t*)&(new_conn->clientaddr)), &(new_conn->clientaddr_size));
+		if(new_conn->socket == HXS_INVALID_SOCKET){
+			fprintf(HXS_ERROR_STREAM,"Failed to accept a socket with error: %s\n", strerror(errno));
+			HXS_DEBUG_MSG("Closing already accepted connections...\n");
+			hxs_conn_list_clear(&list);
+			return NULL;
 		}
 
+		if(enable_non_blocking(new_conn->socket)== HXS_ERROR){
+			fprintf(HXS_ERROR_STREAM,"Failed to set the socket to non-blocking mode...\n");
+			HXS_DEBUG_MSG("Closing already accepted connections...\n");
+			hxs_conn_list_clear(&list);
+			return NULL;
+		}
 
-
-
+		new_conn->status = HXS_CONN_INIT;
+		hxs_conn_list_add(&list,&new_conn);
 
 	}
 
+
+	return hxs_conn_list_t;
 
 }
 
