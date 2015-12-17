@@ -9,37 +9,51 @@
 #define HXS_CONNECTION_H_
 
 #include "hxs_std.h"
+#include "hxs_list.h"
+#include "hxs_buffer.h"
 #include <netinet/in.h>
 
-#define NO_CONNS_AVAIL 0;
-#define CONNS_AVAIL 1;
+typedef struct hxs_service_s hxs_service_t;
 
 /**
  *
  */
 
-enum{
-	HXS_CONN_INIT = 0x1,
-	HXS_CONN_SEND = 0x2,
-	HXS_CONN_RECV = 0x4,
-	HXS_CONN_ERRO = 0x8
+enum {
+	HXS_CONN_INIT = 0x01,
+	HXS_CONN_SEND = 0x02,
+	HXS_CONN_RECV = 0x04,
+	HXS_CONN_ERROR = 0x08,
+	HXS_CONN_CLOSED = 0x10,
+	HXS_CONN_CLEANUP = 0x20,
+	HXS_CONN_DONE = 0x40
 };
+
+
+
 
 /**
  * simple connection structure
  * prev, next are supposed to be used internally
  */
-struct hxs_connection_s{
-	hxs_socket socket;
-	unsigned int status:4;
+struct hxs_connection_s {
+	hxs_socket_t socket;
+	unsigned char status;
 
 	sockaddr_storage_t clientaddr;
 	socklen_t clientaddr_size;
 
+	void* data;
+	hxs_service_t* service;
+	hxs_buffer_t buf;
+
+
+	/*PRIVATE*/
 	struct hxs_connection_s* prev;
 	struct hxs_connection_s* next;
 
 };
+
 typedef struct hxs_connection_s hxs_connection_t;
 
 /**
@@ -50,27 +64,25 @@ typedef hxs_connection_t* hxs_conn_list_t;
 /**
  * hxs_listener_t
  */
-typedef struct{
-	hxs_socket socket;
+struct hxs_listener_s{
+	hxs_socket_t socket;
 
 	sockaddr_storage_t hostaddr;
 	socklen_t hostaddr_size;
 
-	unsigned int available_conns: 1;
+};
 
-}hxs_listener_t;
+typedef struct hxs_listener_s hxs_listener_t;
 
-
-/*hxs_conn_list_t functions*/
-hxs_connection_t* hxs_conn_list_add(hxs_conn_list_t* listptr, const hxs_connection_t* conn);
-void hxs_conn_list_clear(hxs_conn_list_t* listptr);
-hxs_conn_list_t hxs_conn_list_merge(hxs_conn_list_t  list_into, hxs_conn_list_t* list_other);
+int hxs_conn_recv(hxs_connection_t* conn);
+int hxs_conn_send(hxs_connection_t* conn);
 
 /**
  * hxs_listener_t
  */
-int hxs_open_listener(hxs_listener_t* listener , const char* port , int afamily , int backlog);
-hxs_conn_list_t hxs_get_new_conns(hxs_listener_t* listener);
-int hxs_close_listener(hxs_listener_t* listener);
+int hxs_listener_open(hxs_listener_t* listener, const char* port, int afamily,
+		int backlog);
+int hxs_listener_accept(const hxs_listener_t* listener, hxs_connection_t* connptr) ;
+int hxs_listener_close(hxs_listener_t* listener);
 
 #endif /* HXS_CONNECTION_H_ */

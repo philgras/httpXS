@@ -19,7 +19,7 @@
 #define HXS_ERROR_STREAM stderr
 
 /*SOCKET DEFINES*/
-#define hxs_socket int
+#define hxs_socket_t int
 #define HXS_INVALID_SOCKET -1
 #define hxs_closesocket(s) if(close(s) == -1) \
 			fprintf(HXS_ERROR_STREAM,"Failed to close socket with error: %s\n", strerror(errno))
@@ -28,6 +28,9 @@ typedef struct sockaddr_in sockaddr_in_t ;
 typedef struct sockaddr_in6 sockaddr_in6_t ;
 typedef struct sockaddr sockaddr_t ;
 typedef struct sockaddr_storage sockaddr_storage_t;
+
+
+typedef int hxs_epollfd_t;
 
 enum hxs_errorcode{
 	HXS_OK = 0,
