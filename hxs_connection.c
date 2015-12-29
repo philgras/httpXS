@@ -15,19 +15,27 @@
 #include <netdb.h>
 #include <fcntl.h>
 
+
 static hxs_socket_t get_bound_socket(const char* port, int afamily,
 		sockaddr_storage_t* addr, socklen_t* len);
 static int enable_non_blocking(hxs_socket_t socket);
 
 
-int hxs_conn_recv( hxs_connection_t* conn){
-    int rc = recv(conn->socket,
-            conn->buf.data ,
-            conn->buf.size,0);
+int hxs_conn_recv( hxs_connection_t* conn, hxs_buffer_t* buf){
+
+	/*resize if necessary*/
+	if(buf->size - hxs_buffer_used(buf) < MAX_BUF_SIZE){
+		HXS_DEBUG_MSG("Increase buffer...\n");
+    	if(hxs_buffer_add_memory(buf,MAX_BUF_SIZE) == HXS_ERROR){
+    		return HXS_ERROR;
+    	}
+    }
+
+	int rc = recv(conn->socket, buf->end ,buf->size,0);
     if(rc == -1){
         if(errno == EAGAIN || errno == EWOULDBLOCK){
-            conn->status = HXS_CONN_RECV;
-            return HXS_OK;
+        	HXS_DEBUG_MSG("Recv waits...\n");
+            return HXS_WAIT;
         }
 
         fprintf(HXS_ERROR_STREAM,
@@ -37,23 +45,40 @@ int hxs_conn_recv( hxs_connection_t* conn){
 
 
     }else if(rc == 0){
-        printf("Peer closed the connection...\n");
-        conn->status = HXS_CONN_CLOSED;
-
-        return HXS_ERROR;
+        HXS_DEBUG_MSG("Peer closed the connection...\n");
+        return HXS_CLIENT_CLOSED;
 
     }else if(rc > 0){
-        conn->status = HXS_CONN_DONE;
-        conn->buf.end = conn->buf.data +rc;
-
+      buf->end = buf->end +rc;
+      HXS_DEBUG_MSG("Received chunk...\n");
     }
 
     return HXS_OK;
 }
 
-int hxs_conn_send(hxs_connection_t* conn){
+int hxs_conn_send(hxs_connection_t* conn, hxs_buffer_t* buf){
+
+	int rc;
 
 
+	while(buf->read_pos != buf->end){
+		rc = send(conn->socket, buf->read_pos, buf->end - buf->read_pos ,0);
+		if(rc == -1){
+			if(errno == EAGAIN || errno == EWOULDBLOCK){
+				HXS_DEBUG_MSG("Send waits...\n");
+				return HXS_WAIT;
+			}
+
+			fprintf(HXS_ERROR_STREAM,
+					"%s :  %d : Failed to recv with error %s...\n"
+					,__FILE__,__LINE__, strerror(errno));
+			return HXS_ERROR;
+
+
+		}
+		HXS_DEBUG_MSG("Sent chunk...\n");
+		buf->read_pos += rc;
+	}
     return HXS_OK;
 
 }

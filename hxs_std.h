@@ -32,9 +32,13 @@ typedef struct sockaddr_storage sockaddr_storage_t;
 
 typedef int hxs_epollfd_t;
 
-enum hxs_errorcode{
+enum hxs_rccode{
+	HXS_ERROR = -1,
 	HXS_OK = 0,
-	HXS_ERROR = -1
+	HXS_WAIT = 1,
+	HXS_CLIENT_CLOSED = 2,
+	HXS_STOP = 3,
+	HXS_FILE_NOT_FOUND = 4
 };
 
 

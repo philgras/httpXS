@@ -1,7 +1,7 @@
 #ifndef HXS_LOG_H_
 #define HXS_LOG_H_
 
-#include "hxs_error.h"
+
 #include <stdio.h>
 #include <stdarg.h>
 

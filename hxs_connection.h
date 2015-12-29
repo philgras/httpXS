@@ -13,8 +13,10 @@
 #include "hxs_buffer.h"
 #include <netinet/in.h>
 
-typedef struct hxs_service_s hxs_service_t;
+#define MAX_BUF_SIZE 8192
 
+typedef struct hxs_service_s hxs_service_t;
+typedef struct hxs_http_handler_s hxs_http_handler_t;
 /**
  *
  */
@@ -43,10 +45,9 @@ struct hxs_connection_s {
 	sockaddr_storage_t clientaddr;
 	socklen_t clientaddr_size;
 
-	void* data;
-	hxs_service_t* service;
-	hxs_buffer_t buf;
 
+	hxs_http_handler_t* http_handler;
+	hxs_service_t* service;
 
 	/*PRIVATE*/
 	struct hxs_connection_s* prev;
@@ -74,8 +75,8 @@ struct hxs_listener_s{
 
 typedef struct hxs_listener_s hxs_listener_t;
 
-int hxs_conn_recv(hxs_connection_t* conn);
-int hxs_conn_send(hxs_connection_t* conn);
+int hxs_conn_recv(hxs_connection_t* conn, hxs_buffer_t* buf);
+int hxs_conn_send(hxs_connection_t* conn, hxs_buffer_t* buf);
 
 /**
  * hxs_listener_t
