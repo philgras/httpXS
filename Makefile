@@ -6,7 +6,7 @@ BINDIR = bin
 
 .PHONY: all
 
-all: httpXS clean
+all: httpXS test clean
 
 
 httpXS: *.c *.h
@@ -15,7 +15,8 @@ httpXS: *.c *.h
 test: $(TESTDIR)/*.c *.c *.h
 #hxs_conn_list_test
 	#$(CC) $(CFLAGS) $(LFLAGS) -o $(BINDIR)/hxs_conn_list_test $(TESTDIR)/hxs_conn_list_test.c hxs_connection.c
-	$(CC) $(CFLAGS) $(LFLAGS) -o $(BINDIR)/hxs_list_test $(TESTDIR)/hxs_list_test.c
+	#$(CC) $(CFLAGS) $(LFLAGS) -o $(BINDIR)/hxs_list_test $(TESTDIR)/hxs_list_test.c
+	$(CC) $(CFLAGS) $(LFLAGS) -o $(BINDIR)/hxs_map_test $(TESTDIR)/hxs_map_test.c
 clean:
 	rm -f *.o
 	rm -f $(TESTDIR)/*.o
