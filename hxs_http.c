@@ -317,6 +317,7 @@ static int send_routine(hxs_connection_t* conn){
 		case HXS_OK:
 			if(conn->http_handler->keep_alive){
 				HXS_DEBUG_MSG("Send completed + keep alive...\n");
+				conn->http_handler->parser_needs_init = 0;
 				return HXS_OK;
 			}else{
 				HXS_DEBUG_MSG("Send completed + close...\n");
@@ -348,6 +349,7 @@ static void send_and_recv_loop(hxs_connection_t* conn){
 			http_parser_init(&(conn->http_handler->parser),HTTP_REQUEST);
 			http_request_init(&(conn->http_handler->req));
 			conn->http_handler->parser.data = conn->http_handler;
+			conn->http_handler->parser_needs_init = 0;
 		}
 
 		HXS_DEBUG_MSG("Recv Routine...\n");
@@ -365,6 +367,8 @@ static void send_and_recv_loop(hxs_connection_t* conn){
 		if(send_routine(conn) != HXS_OK){
 			break;
 		}
+
+		conn->http_handler->buf.read_pos = conn->http_handler->buf.data;
 
 	}
 
