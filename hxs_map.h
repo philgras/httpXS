@@ -86,6 +86,7 @@ typedef struct {
 				}}
 
 
+
 #define HXS_MAP_REMOVE(map,key)															\
 		for(hxs_map_element_t* iter = (hxs_map_element_t*)((map)->list.head), * next;	\
 						iter != NULL; iter = (hxs_map_element_t*) next){				\
