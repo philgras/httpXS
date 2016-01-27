@@ -1,0 +1,82 @@
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Administration</title>
+		
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <!-- Bootstrap Stylesheets und Javascript-->
+        <link rel="stylesheet" href="../bootstrap3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../bootstrap3.3.6/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/admin.css">
+
+				<script src="../bootstrap3.3.6/js/bootstrap.min.js"></script>
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        
+        <script src="js/admin.js"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">httpXS</a>
+								<!--<button class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
+                       <span class="icon-bar"></span>
+                       <span class="icon-bar"></span>
+                       <span class="icon-bar"></span>
+                </button>-->
+            </div>
+				
+		      <div class="navbar-collapse collapse">
+						
+							<ul class="nav navbar-nav navbar-left">
+								<li><a href="#">Services</a></li>
+								<li><a href="#">Monitoring</a></li>
+
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="#">Options</a></li>
+							</ul>
+		          <!--<form class="navbar-form navbar-right" role="search">
+		                  <div class="form-group">
+		                      form-controll machts angemessen grpss
+		                    <input type="text" class="form-control" placeholder="Search">
+		                  </div>
+		                  <button class="btn btn-success" type='button' onclick="getData()">Los!</button>
+								<button class="btn btn-danger" type='button'>
+									<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+								</button>
+		          </form>-->
+						</div>
+					</div>
+        </nav>
+				
+        <div class="container mainbox">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-1">
+									<h3>Hosted Services</h3><br/>
+									<div class="btn-group btn-group-sm" role="group" aria-label="Add or delete services">
+										<button class="btn btn-default" type="button" onclick="addService()">Add</button>
+										<button class="btn btn-default" type="button" onclick="deleteService()">Delete</button>	
+									</div>								
+									<table class="table">
+										<thead>
+											<tr>
+												<td></td>
+												<td>Name</td>
+												<td>Root</td>
+												<td>Number of Connections</td>
+												<td>Restrictions</td>
+											</tr>
+										</thead>
+										<tbody id="tServices">
+										</tbody>
+									</table>
+								</div>
+						</div>
+				</div>
+                    
+
+	</body>
+</html>

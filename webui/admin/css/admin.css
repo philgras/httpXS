@@ -1,0 +1,19 @@
+#on_off{
+	background-color: #882222;
+
+}
+
+.serv-sym{
+	color: white;
+	text-align: center;
+}
+
+.banner{
+
+	font-size: 70pt;
+	min-height: 10%; 
+}
+
+body{ 
+	padding-top: 70px;
+}
