@@ -29,8 +29,8 @@ typedef struct {
 	unsigned int error_flag:1;
 }hxs_map_t;
 
-#define HXS_MAP_INIT(map)									\
-			HXS_LIST_INIT(&((map)->list));					\
+#define HXS_MAP_INIT(map)						\
+			HXS_LIST_INIT(&((map)->list));		\
 			(map)->error_flag = HXS_OK;
 
 /**
@@ -41,11 +41,11 @@ typedef struct {
  * @param	dataptrptr is a pointer to a pointer to void. Note: you need to cast that pointer
  * @param	type is the type of the data object
  */
-#define HXS_MAP_FIND(map,key,dataptrptr, type)																		\
-			*(dataptrptr) = NULL;																					\
-			for(hxs_map_element_t* iter = (hxs_map_element_t*)((map)->list.head); 									\
-							iter != NULL; iter = (hxs_map_element_t*) (iter->next)){								\
-					if(strcmp((key),iter->keystr) == 0){ *(dataptrptr) = (const type*) (iter->data); break;}		\
+#define HXS_MAP_FIND(map,key,dataptrptr, type)																	\
+			*(dataptrptr) = NULL;																				\
+			for(hxs_map_element_t* iter = (hxs_map_element_t*)((map)->list.head); 								\
+							iter != NULL; iter = (hxs_map_element_t*) (iter->next)){							\
+					if(strcmp((key),iter->keystr) == 0){ *(dataptrptr) = (const type*) (iter->data); break;}	\
 			}
 
 
@@ -100,15 +100,15 @@ typedef struct {
 				}																		\
 		}																				\
 
-#define HXS_MAP_CLEAR(map)																	\
-		for(hxs_map_element_t* iter = (hxs_map_element_t*)((map)->list.head), * next;		\
-								iter != NULL; iter = (hxs_map_element_t*) next){			\
-						next = iter->next;													\
-						HXS_LIST_REMOVE(&((map)->list),hxs_map_element_t,iter);				\
-						free(iter->keystr);													\
-						free(iter->data);													\
-						free(iter);															\
-																							\
+#define HXS_MAP_CLEAR(map)																\
+		for(hxs_map_element_t* iter = (hxs_map_element_t*)((map)->list.head), * next;	\
+								iter != NULL; iter = (hxs_map_element_t*) next){		\
+						next = iter->next;												\
+						HXS_LIST_REMOVE(&((map)->list),hxs_map_element_t,iter);			\
+						free(iter->keystr);												\
+						free(iter->data);												\
+						free(iter);														\
+																						\
 				}
 
 
