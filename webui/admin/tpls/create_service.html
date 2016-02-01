@@ -1,0 +1,44 @@
+
+<div class="container-fluid mainbox">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h3>Create a new services</h3><br/>
+      <h4>Basic Information</h4>
+      <div id="banner" class="banner serv-sym">#</div>
+      <h5>Service Name</h5>
+      <input type="text" class="form-control" maxlength="40" placeholder="Name..."/>
+      <h5>Description</h5>
+      <input type="text" class="form-control" placeholder="Description..."/>
+      <h5>Root Directory</h5>
+      <input type="text" class="form-control" placeholder="Directory..."/>
+      <br/>
+
+      <h4>Restrictions</h4>
+      <h5>Allowed number of clients</h5>
+      <input type="number" class="form-control" placeholder="Enter a number..." aria-describedby="noc_input_text">
+      <br>
+
+      <h5>IP Addresses</h5>
+
+
+      <div class="btn-group btn-group-sm" role="group" aria-label="Add or delete services">
+        <button class="btn btn-default" type="button" onclick="addIP()">Add</button>
+        <button class="btn btn-default" type="button" onclick="deleteService()">Delete</button>
+        <select name="sw_list">
+          <option>White List</option>
+          <option>Black List</option>
+        </select>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <td>IP Version</td>
+            <td>Address</td>
+          </tr>
+        </thead>
+        <tbody id="tServices">
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
