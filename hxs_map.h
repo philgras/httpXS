@@ -33,6 +33,10 @@ typedef struct {
 			HXS_LIST_INIT(&((map)->list));		\
 			(map)->error_flag = HXS_OK;
 
+#define HXS_MAP_MOVE(dest, src) \
+			*(dest) = *(src);	\
+			HXS_MAP_INIT(src);
+
 /**
  * Finds an element in the map
  *

@@ -11,6 +11,7 @@
 #include "hxs_std.h"
 #include "hxs_list.h"
 #include "hxs_buffer.h"
+#include "hxs_map.h"
 #include <netinet/in.h>
 
 #define MAX_BUF_SIZE 8192
@@ -45,6 +46,7 @@ struct hxs_connection_s {
 	sockaddr_storage_t clientaddr;
 	socklen_t clientaddr_size;
 
+	hxs_map_t mod_data_map;
 
 	hxs_http_handler_t* http_handler;
 	hxs_service_t* service;

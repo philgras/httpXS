@@ -83,7 +83,7 @@ static int on_complete(http_parser* parser){
 static int http_handler_init(hxs_http_handler_t* http_handler);
 static void inline http_request_init(hxs_http_request_t* req);
 static void cleanup(hxs_connection_t* conn);
-static int http_handler_process_request(hxs_http_handler_t* http_handler);
+static int http_handler_process_request(hxs_http_handler_t* http_handler, const hxs_connection_t* conn);
 static void inline http_build_std_response(hxs_buffer_t* buf, enum http_code code);
 static const char* get_mime_type(const char* url);
 static int http_handler_serialize_response(hxs_http_handler_t* handler, hxs_buffer_t* body);
@@ -199,7 +199,7 @@ static int http_handler_serialize_response(hxs_http_handler_t* handler, hxs_buff
 
 }
 
-static int http_handler_process_request(hxs_http_handler_t* http_handler){
+static int http_handler_process_request(hxs_http_handler_t* http_handler, const hxs_connection_t* conn){
 
 
 	switch (http_handler->parser.method) {
@@ -207,11 +207,15 @@ static int http_handler_process_request(hxs_http_handler_t* http_handler){
 			{
 				hxs_buffer_t body;
 
-				char path [http_handler->req.url_length +1];
+				size_t path_length = strlen(conn->service->root_path);
 
-				memcpy(path,http_handler->req.url, http_handler->req.url_length);
+				char path [path_length + http_handler->req.url_length + 1];
 
-				path[http_handler->req.url_length] = '\0';
+				strcpy(path,conn->service->root_path);
+
+				memcpy(path+path_length, http_handler->req.url, http_handler->req.url_length);
+
+				path[path_length + http_handler->req.url_length] = '\0';
 
 				HXS_DEBUG_MSG("Requested resource: %s\n", path);
 
@@ -357,7 +361,7 @@ static void send_and_recv_loop(hxs_connection_t* conn){
 			break;
 		}
 		HXS_DEBUG_MSG("Handle...\n");
-		if(http_handler_process_request(conn->http_handler) != HXS_OK){
+		if(http_handler_process_request(conn->http_handler, conn) != HXS_OK){
 			cleanup(conn);
 			break;
 		}

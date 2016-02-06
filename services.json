@@ -1,0 +1,16 @@
+[	
+	{
+		"name" : "Admin Tool",
+		"description" : "Administration Tool for an httpXS Server",
+		"rootpath" : "/home/philip/",
+		"port" : "8080",
+		"active" : true,
+		"modules" : [
+									{ "name" : "service_mod",
+									  "restrictions" : [256]
+									}
+								]
+	}
+
+] 
+

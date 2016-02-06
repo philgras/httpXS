@@ -2,7 +2,7 @@
  * hxs_http.h
  *
  *  Created on: 13.12.2015
- *      Author: philip
+ *      Author: phigras
  */
 
 #ifndef HXS_HTTP_H_
