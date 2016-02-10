@@ -1,0 +1,12 @@
+{
+  "service" : [
+    {
+      "name" : "Core-Service",
+      "path" : "home/fabi"
+    },
+    {
+      "name" : "Service 2",
+      "path" : "home/philip"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-var httpXS = angular.module('httpXS',['ngRoute','ui.bootstrap','ngAnimate']);
+var httpXS = angular.module('httpXS',['ngRoute','ui.bootstrap','ngAnimate','ngStorage']);
 
 httpXS.config(function($routeProvider){
   $routeProvider
@@ -6,9 +6,9 @@ httpXS.config(function($routeProvider){
       templateUrl : 'tpls/home.html',
       controller  : 'homeCtrl'
     })
-    .when('/create', {
-      templateUrl : 'tpls/create_service.html',
-      controller  : 'createCtrl'
+    .when('/service', {
+      templateUrl : 'tpls/services.html',
+      controller  : 'servicesCtrl'
     })
     .when('/viewService', {
       templateUrl : 'tpls/viewService.html',
@@ -22,28 +22,14 @@ httpXS.config(function($routeProvider){
 
 
 httpXS.controller('homeCtrl',['$scope','$uibModal','$location',function($scope,$uibModal,$location){
+  $scope.setCurrentLocation = function(activeA){
+    switch (activeA) {
+      case 'serviceOverview':
+          $scope.serviceOverview = true;
+        break;
+      default:
 
-  $scope.services = [
-      {
-        "name" : "Core-Service",
-        "path" : "home/fabi",
-        "running" : true
-      },
-      {
-        "name" : "Service 2",
-        "path" : "home/philip",
-        "running" : false
-      }
-    ];
-
-  $scope.add = function(){
-    var uibModalInstance = $uibModal.open({
-      templateUrl : 'tpls/create_service.html',
-      controller  : 'createCtrl'
-    });
-  };
-
-  $scope.viewService = function(service){
-    $location.path('/viewService');
+    }
   }
+
 }]);

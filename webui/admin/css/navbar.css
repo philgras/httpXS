@@ -1,0 +1,84 @@
+.navbar-brand{
+	color: #06404A;
+  outline: none !important;
+  padding: 8px;
+}
+
+.navbar{
+	background-color: rgba(255, 255, 255, 1) !important;
+	border-color: rgb(255, 255, 255) !important;
+	box-shadow: 0px 3px 5px;
+}
+
+}
+.navbar-fixed-top{
+  position: static !important;
+}
+.navbar-toggle{
+  color:#06404A;
+  border: 1px solid #06404A;
+  line-height: 1;
+
+}
+.navbar-toggle:hover{
+  background-color: #06404A;
+  color: white;
+}
+
+.navbar-brand > img{
+	width: 32px;
+	height: 32px;
+}
+
+nav.navbar{
+  border-radius: 0;
+  border: 0px;
+}
+.navbar-right > li{
+  padding-right: 10px;
+}
+
+.nav > li > a:hover:after,
+.nav > li > a:focus:after
+{
+  color: black ;
+  /*transition*/
+  width: 100%;
+  background: #06404A;
+
+
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus{
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.nav > li > a:after{
+  content: '';
+	display: block;
+	margin: auto;
+	height: 2px;
+	width: 0px;
+	background: transparent;
+	transition: width .3s ease, background-color .3s ease;
+}
+
+.nav > li > a{
+  color: #06404A;
+  margin-left: 10px;
+  outline: none;
+
+  /*transition*/
+  display: inline-block;
+  position: relative;
+  padding-bottom: 3px;
+
+}
+.activeA,
+.activeA:focus{
+  color: black ;
+  /*transition*/
+  width: 100%;
+  background: #06404A;
+}
