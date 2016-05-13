@@ -56,10 +56,15 @@ border-radius: 5px;
 	width: 16px;
 	border-radius: 8px;
 }
-.stat_ok{
+.status{
+	width: 16px;
+	height: 16px;
+	border-radius: 8px;
+}
+.status-ok{
 	background-color: green;
 }
-.stat_wrong{
+.status-wrong{
 	background-color: red;
 }
 .modal-header{

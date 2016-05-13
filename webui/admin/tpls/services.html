@@ -7,6 +7,7 @@
       <th class="icon"></th>
       <th class="nameCell">service</th>
       <th>path</th>
+      <th class="connCell">status</th>
       <th class="connCell">conn.</th>
     </thead>
     <tbody>
@@ -14,6 +15,7 @@
         <td class="iconCell"><div class="serviceIcon text-center">#</div></td>
         <td class="nameCell">{{x.trimmedName}}</td>
         <td>{{x.path}}</td>
+        <td class="connCell text-center"><div ng-class="{'status-ok status' : x.running , 'status status-wrong' : !x.running}"></div></td>
         <td class="connCell">{{x.conn}}</td>
       </tr>
     </tbody>
